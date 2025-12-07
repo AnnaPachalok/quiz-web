@@ -1,2 +1,2 @@
 # quiz-web
-application with quizzes and questions
+Application with quizzes and questions

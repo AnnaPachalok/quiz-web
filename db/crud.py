@@ -14,107 +14,107 @@ def close():
     cursor.close()
     conn.close()
 
-
 def create_tables():
     open()
 
-
-    cursor.execute("""CREATE TABLE IF NOT EXISTS quiz (
+    cursor.execute('''CREATE TABLE IF NOT EXISTS quiz (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title VARCHAR, 
-    description TEXT              
-    )""")
+    title VARCHAR,
+    description TEXT
+    )''')
 
-
-    cursor.execute("""CREATE TABLE IF NOT EXISTS questions (
+    cursor.execute('''CREATE TABLE IF NOT EXISTS questions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     question VARCHAR,
-    answer VARCAR,
+    answer VARCHAR,
     wrong1 VARCHAR,
-    wrong2 VARCHAR,               
-    wrong3 VARCHAR              
-    )""")
+    wrong2 VARCHAR,
+    wrong3 VARCHAR
+    )''')
 
-
-    cursor.execute("""CREATE TABLE IF NOT EXISTS quiz_questions (
+    cursor.execute('''CREATE TABLE IF NOT EXISTS quiz_questions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     quiz_id INTEGER,
     question_id INTEGER,
     FOREIGN KEY (quiz_id) REFERENCES quiz (id),
-    FOREIGN KEY (question_id) REFERENCES questions (id)          
-    )""")
+    FOREIGN KEY (question_id) REFERENCES questions (id)
+    )''')
 
     conn.commit()
     close()
-  
+
 def add_quizes():
     open()
 
     quizes = [
-        ("Тварини", "Перевір знання про тварин."),
-        ("Космос", "Питання про планети й зорі."),
-        ("Україна", "Що ти знаєш про нашу країну?"),
-        ("Історія", "Події минулого світу."),
-        ("Фільми", "Впізнай героїв і стрічки.")
+        ("Винаходи", "Перевір, наскільки добре ти знаєш відкриття, що змінили світ — від колеса до ШІ."),
+        ("Космос", "Заглибся у загадки планет, зірок і чорних дір. Факт чи фантастика — вирішуй сам."),
+        ("Кіно", "Від класики до сучасних блокбастерів — перевір свої знання про кіно та акторів."),
+        ("IT", "Тест для ґіків: мови програмування, стартапи, кібератаки й тренди технологій."),
+        ("Міфи", "Древні боги, герої й монстри — дізнайся, наскільки добре ти знаєш міфологію."),
     ]
 
-    cursor.executemany("""INSERT INTO quiz(title, description) VALUES (?, ?)""", quizes)
+    cursor.executemany('''INSERT INTO quiz (title, description) VALUES (?, ?)''', quizes)
     conn.commit()
     close()
 
 def add_questions():
     open()
+
     questions = [
-        # Тварини
-        ("Яка тварина найбільша у світі?", "Синій кит", "Слон", "Жираф", "Білий ведмідь"),
-        ("Яка тварина вміє літати?", "Кажан", "Кіт", "Слон", "Крокодил"),
-        ("Скільки лап у павука?", "8", "6", "10", "4"),
-        ("Яка тварина спить зимою?", "Ведмідь", "Лисиця", "Вовк", "Олень"),
-        ("Яка тварина має довгу шию?", "Жираф", "Зебра", "Кенгуру", "Кіт"),
+            ("Хто винайшов електричну лампочку?", "Томас Едісон", "Нікола Тесла", "Олександр Белл", "Ісаак Ньютон"),
+            ("Який винахід вважають найважливішим у розвитку транспорту?", "Колесо", "Двигун внутрішнього згоряння",
+             "Кермо", "Гальма"),
+            ("Хто створив перший телефон?", "Олександр Белл", "Грем Белл", "Томас Морзе", "Нікола Тесла"),
+            ("Яка країна запустила перший штучний супутник Землі?", "СРСР", "США", "Китай", "Німеччина"),
+            ("Хто винайшов Інтернет?", "Тім Бернерс-Лі", "Стів Джобс", "Білл Гейтс", "Марк Цукерберг"),
 
-        # Космос
-        ("Яка планета найближча до Сонця?", "Меркурій", "Земля", "Марс", "Венера"),
-        ("Як називається наша галактика?", "Чумацький Шлях", "Андромеда", "Молочна Туманність", "Оріон"),
-        ("Яка планета червона?", "Марс", "Юпітер", "Нептун", "Венера"),
-        ("Що є центром Сонячної системи?", "Сонце", "Земля", "Місяць", "Марс"),
-        ("Як називається супутник Землі?", "Місяць", "Фобос", "Деймос", "Титан"),
+            ("Яка планета найбільша в Сонячній системі?", "Юпітер", "Сатурн", "Марс", "Уран"),
+            ("Як називається наш супутник?", "Місяць", "Європа", "Фобос", "Іо"),
+            ("Що таке чорна діра?", "Об'єкт, з якого не може втекти навіть світло", "Порожнеча у космосі", "Астероїд",
+             "Зірка, що вибухнула"),
+            ("Який космічний апарат першим висадив людину на Місяць?", "Apollo 11", "Voyager 1", "Sputnik 1", "Luna 2"),
+            ("Хто був першим космонавтом?", "Юрій Гагарін", "Ніл Армстронг", "Алан Шепард", "Базз Олдрін"),
 
-        # Україна
-        ("Столиця України?", "Київ", "Львів", "Харків", "Одеса"),
-        ("Національна страва України?", "Борщ", "Піца", "Суші", "Кебаб"),
-        ("Яке море омиває південь України?", "Чорне", "Азовське", "Балтійське", "Каспійське"),
-        ("Символ України?", "Тризуб", "Хрест", "Зірка", "Сонце"),
-        ("Найбільша річка України?", "Дніпро", "Дністер", "Прут", "Тиса"),
+            ("Хто зняв фільм 'Початок' (Inception)?", "Крістофер Нолан", "Стівен Спілберг", "Джеймс Кемерон",
+             "Рідлі Скотт"),
+            ("У якому фільмі звучить фраза 'I’ll be back'?", "Термінатор", "Матриця", "Хижак", "Робокоп"),
+            ("Який фільм отримав Оскар за найкращий фільм у 1998 році?", "Титанік", "Форрест Гамп", "Матриця",
+             "Гладіатор"),
+            ("Як звали головного героя у 'Матриці'?", "Нео", "Морфеус", "Трініті", "Сміт"),
+            ("Який мультфільм студії Pixar був першим?", "Історія іграшок", "У пошуках Немо", "Корпорація монстрів",
+             "Вгору"),
 
-        # Історія
-        ("Хто був першим президентом України?", "Леонід Кравчук", "Віктор Ющенко", "Леонід Кучма", "Петро Порошенко"),
-        ("У якому році почалася Друга світова війна?", "1939", "1941", "1914", "1945"),
-        ("Яке місто було столицею Київської Русі?", "Київ", "Чернігів", "Новгород", "Полоцьк"),
-        ("Хто відкрив Америку?", "Христофор Колумб", "Магеллан", "Кук", "Васко да Гама"),
-        ("Де винайшли піраміди?", "Єгипет", "Рим", "Греція", "Індія"),
+            ("Хто створив мову Python?", "Гвідо ван Россум", "Денніс Річі", "Джеймс Гослінг", "Лінус Торвальдс"),
+            ("Який протокол використовується для передачі вебсторінок?", "HTTP", "FTP", "SMTP", "SSH"),
+            ("Що означає HTML?", "HyperText Markup Language", "HighText Machine Language",
+             "HyperTransfer Main Language", "Hyper Tool Multi Language"),
+            ("Яка компанія створила операційну систему Android?", "Google", "Microsoft", "Apple", "Samsung"),
+            ("Який фреймворк використовують для Python веб-розробки?", "Django", "React", "Laravel", "Spring"),
 
-        # Фільми
-        ("Хто головний герой у 'Шрек'?", "Шрек", "Фіона", "Осел", "Дракон"),
-        ("Як звуть хлопчика з 'Гаррі Поттер'?", "Гаррі", "Рон", "Драко", "Дамблдор"),
-        ("У якому мультфільмі є Елза?", "Холодне серце", "Моана", "Рапунцель", "Бембі"),
-        ("Як звали лева з 'Король лев'?", "Сімба", "Муфаса", "Скар", "Нала"),
-        ("У якому мультфільмі є риба Немо?", "У пошуках Немо", "Русалонька", "Океан", "Рибки 3D")
+            ("Хто був богом грому в грецькій міфології?", "Зевс", "Аполлон", "Посейдон", "Арес"),
+            ("Як звали героя, що переміг Мінотавра?", "Тесей", "Персей", "Одіссей", "Ахілл"),
+            ("Яка річка відділяла світ живих від мертвих у міфах?", "Стікс", "Лета", "Ахерон", "Флегетон"),
+            ("У якому місті стояв Троянський кінь?", "Троя", "Афіни", "Спарта", "Рим"),
+            ("Хто був богом війни у Римі?", "Марс", "Юпітер", "Меркурій", "Нептун"),
     ]
 
-    cursor.executemany("""INSERT INTO questions (question, answer, wrong1, wrong2, wrong3) VALUES (?, ?, ?, ?, ?)""", questions)
+
+    cursor.executemany('''INSERT INTO questions (question, answer, wrong1, wrong2, wrong3) VALUES (?, ?, ?, ?, ?)''',
+                       questions)
     conn.commit()
     close()
 
 def add_links():
     open()
     cursor.execute("PRAGMA foreign_keys=on")
-    action = input("Додати зв'язок? (y\n)")
+    action = input("Додати звʼязок? (y/n)")
     while action != "n":
         quiz_id = int(input("Введіть номер вікторини"))
-        questions_id = int(input("Введіть номер запитання"))
-        cursor.execute("""INSERT INTO quiz_questions (quiz_id, question_id) VALUES (?, ?)""", [quiz_id, questions_id])
+        question_id = int(input("Введіть номер запитання"))
+        cursor.execute("""INSERT INTO quiz_questions (quiz_id, question_id) VALUES (?, ?)""", [quiz_id, question_id])
         conn.commit()
-        action = input("Додати зв'язок? (y\n)")
+        action = input("Додати звʼязок? (y/n)")
     close()
 
 def get_quizes():
@@ -123,11 +123,12 @@ def get_quizes():
     quizes = cursor.fetchall()
     close()
     return quizes
-    
-def get_qustion_after(quiz_id=1, question_id = 0):
+
+def get_question_after(quiz_id=1, question_id=0):
+    '''Повертає наступне питання до вибраної вікторини'''
     open()
     cursor.execute("""SELECT questions.id, questions.question, questions.answer, questions.wrong1, questions.wrong2, questions.wrong3
-                   FROM questions, quiz_qustions
+                   FROM questions, quiz_questions
                    WHERE quiz_questions.quiz_id = ? AND
                    quiz_questions.question_id > ? AND
                    quiz_questions.question_id = questions.id
@@ -137,10 +138,30 @@ def get_qustion_after(quiz_id=1, question_id = 0):
     close()
     return question
 
+def check_right_answer(question_id, selected_answer):
+    open()
+    cursor.execute('''SELECT answer FROM questions WHERE id = ?''', [question_id])
+    right_answer = cursor.fetchone()[0]
+    if selected_answer == right_answer:
+        return True
+    else:
+        return False
+
 def main():
     # create_tables()
     # add_quizes()
     # add_questions()
     add_links()
+
+
+
+
+
+
+
+
+
+
+
 
 
