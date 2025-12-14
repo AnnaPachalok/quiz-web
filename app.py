@@ -32,6 +32,7 @@ def check_answer(question_id, selected_answer):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    print(session)
     if request.method == "GET":
         quizes = get_quizes()
         start_session(-1)
@@ -63,11 +64,12 @@ def test():
 
 @app.route("/result")
 def result():
-    return render_template("result.html",
+    result = render_template("result.html",
                             right=session["correct_ans"],
                             wrong=session["wrong_ans"],
                             total=session["total"])
-
+    session.clear()
+    return result 
 
 
 if __name__ == '__main__':
