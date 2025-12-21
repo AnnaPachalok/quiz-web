@@ -6,7 +6,7 @@
     <h1>{{ quest }}</h1>
     {% for answer in ans_list %}
     <div class="form-check">
-        <input class="form-check-input" type="radio" name="ans" id="radioDefault1">
+        <input class="form-check-input" type="radio" name="ans" value="{{ answer }}" id="radioDefault1">
         <label class="form-check-label" for="radioDefault1">
             {{ answer }}
         </label>

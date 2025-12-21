@@ -7,6 +7,7 @@ app.config['SECRET_KEY'] = '12345678'
 
 
 def start_session(quiz_id=0):
+    """Створення сессіі для користувача """
     session['quiz_id'] = quiz_id
     session["last_question_id"] = 0
     session["correct_ans"] = 0
@@ -30,19 +31,20 @@ def check_answer(question_id, selected_answer):
         session["wrong_ans"] += 1
     session["total"] += 1
 
+#головна сторінка
 @app.route("/", methods=["GET", "POST"])
 def index():
     print(session)
-    if request.method == "GET":
-        quizes = get_quizes()
+    if request.method == "GET": #якщо метод GET
+        quizes = get_quizes() #Отримує вікторини з бд
         start_session(-1)
         return render_template("index.html", quizes_list=quizes)
-    else:
-        quiz_id = request.form.get("quiz")
+    else: #якщо метод  POST
+        quiz_id = request.form.get("quiz") #отримує номер вибрано' вікторини
         start_session(quiz_id)
-        return redirect(url_for("test"))
+        return redirect(url_for("test")) #перенаправлення на test
 
-
+#сторінка з тестування 
 @app.route("/test", methods=["GET", "POST"])
 def test():
     if not ("quiz_id" in session) or int(session["quiz_id"]) < 0:
@@ -51,6 +53,7 @@ def test():
         if request.method == "POST":
             selected_answer = request.form.get("ans")
             question_id = int(request.form.get('quest_id'))
+            print (selected_answer,question_id)
             check_answer(question_id, selected_answer)
             session['last_question_id'] = question_id
 
