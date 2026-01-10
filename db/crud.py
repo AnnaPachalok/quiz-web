@@ -43,6 +43,18 @@ def create_tables():
     conn.commit()
     close()
 
+def create_table_results():
+    open()
+    cursor.execute("""CREATE TABLE IF NOT EXISTS results(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        date_time DATETIME DEFAULT CURRENT_TIMESTAMPT,
+        name VARCHAR,
+        correct INTEGER,
+        wrong INTEGER,
+        total INTEGER,
+        quiz_id INTEGER
+        )""")
+
 def add_quizes():
     open()
 
@@ -153,11 +165,20 @@ def create_quiz_db(title, description):
     conn.commit()
     close()
 
-def main():
-    # create_tables()
-    # add_quizes()
-    # add_questions()
-    add_links()
+def add_result(name, correct, wrong, total, quiz_id):
+    open()
+    cursor.execute("""INSERT INTO results(name, correct, wrong, total, quiz_id)
+    VALUES(?, ?, ?, ?, ?)""", [name, correct, wrong, total, quiz_id])
+    conn.commit()
+    close()
+
+def get_results():
+    open()
+    cursor.execute("SELECT * FROM results")
+    results = cursor.fetchall()
+    close()
+    return results
+    
 
 
 

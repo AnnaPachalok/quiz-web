@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from db.crud import get_quizes, get_question_after, check_right_answer, create_quiz_db
+from db.crud import (get_quizes, get_question_after, check_right_answer, create_quiz_db, add_result, get_results)
 from random import shuffle
 
 app = Flask(__name__)
@@ -41,7 +41,9 @@ def index():
         return render_template("index.html", quizes_list=quizes)
     else: #якщо метод  POST
         quiz_id = request.form.get("quiz") #отримує номер вибрано' вікторини
+        name = request.form.get("name")
         start_session(quiz_id)
+        session["name"] = name 
         return redirect(url_for("test")) #перенаправлення на test
 
 #сторінка з тестування 
@@ -67,6 +69,12 @@ def test():
 
 @app.route("/result")
 def result():
+    correct = session["correct_ans"]
+    wrong = session["wrong_ans"]
+    total = session["total"]
+    quiz_id = session["quiz_id"]
+    name = session["name"]
+    add_result(name, correct, wrong, total, quiz_id)
     result = render_template("result.html",
                             right=session["correct_ans"],
                             wrong=session["wrong_ans"],
@@ -89,7 +97,8 @@ def create_question():
 
 @app.route("/all-results")
 def all_results():
-    pass 
+    results = get_results()
+    return render_template("all_results.html", results_list=results)
 
 if __name__ == '__main__':
     app.run(port=5000)

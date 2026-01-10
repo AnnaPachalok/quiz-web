@@ -1,0 +1,32 @@
+{%extends 'base.html' %}
+{% block title %}Результати{% endblock title %}
+{% block content %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Дата/час</th>
+      <th scope="col">Ім'я</th>
+      <th scope="col">Правильно</th>
+      <th scope="col">Неправильно</th>
+      <th scope="col">Всього</th>
+      <th scope="col">Вікторина</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%for id, date_time, name, correct, wrong, total, quiz_id in results_list%}
+    <tr>
+      <th scope="row">id</th>
+      <td>{{ data_time }}</td>
+      <td>{{ name }}</td>
+      <td>{{ correct }}</td>
+      <td>{{ wrong }}</td>
+      <td>{{ total }}</td>
+      <td>{{ quiz_id }}</td>
+    
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{%endblock%}
